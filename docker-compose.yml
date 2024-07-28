@@ -1,0 +1,23 @@
+networks:
+  symfony-network:
+    name: symfony-network
+    external: true
+
+services:
+  php:
+    container_name: symfony-php
+    env_file:
+      - .env.local
+    networks:
+      - symfony-network
+    restart: unless-stopped
+
+  caddy:
+    container_name: caddy-currency
+    depends_on:
+      - php
+    ports:
+      - "8960:80"
+    networks:
+      - symfony-network
+    restart: unless-stopped
